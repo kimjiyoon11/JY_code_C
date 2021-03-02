@@ -35,10 +35,6 @@ void userAdd(struct nameList* Ntarget, struct codeList* Ctarget, char name_s[100
     Ctarget->codeNext = CnewNode;
 }
 
-void userSelect123() {
-
-}
-
 int main(void)
 {
     bool loop_exit = false;
