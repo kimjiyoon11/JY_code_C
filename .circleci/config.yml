@@ -1,0 +1,141 @@
+#include<stdio.h>
+#include <stdlib.h>
+#include<string.h>
+
+#define nameMax 100
+#define codeMax 100
+
+typedef int bool;
+#define true 1
+#define false 0
+
+struct nameList {    // 연결 리스트의 노드 구조체
+    struct NODE* nameNext;    // 다음 노드의 주소를 저장할 포인터
+    char* name[nameMax];
+
+}nameList;
+
+struct codeList {
+    struct NODE* codeNext;    // 다음 노드의 주소를 저장할 포인터
+    char* code[codeMax];
+}codeList;
+
+void userAdd(struct nameList* Ntarget, struct codeList* Ctarget, char name_s[1000], char code_s[1000])    // 기준 노드 뒤에 노드를 추가하는 함수
+{
+    struct nameList* NnewNode = malloc(sizeof(struct nameList)); //새 노드 생성
+    struct codeList* CnewNode = malloc(sizeof(struct codeList));
+
+    NnewNode->nameNext = Ntarget->nameNext;    // 새 노드의 다음 노드에 기준 노드의 다음 노드를 지정
+    CnewNode->codeNext = Ctarget->codeNext;
+
+    strcpy_s(NnewNode->name, sizeof(struct nameList), name_s); // 데이터 저장
+    strcpy_s(CnewNode->code, sizeof(struct codeList), code_s);
+
+    Ntarget->nameNext = NnewNode;    // 기준 노드의 다음 노드에 새 노드를 지정
+    Ctarget->codeNext = CnewNode;
+}
+
+void userSelect123() {
+
+}
+
+int main(void)
+{
+    bool loop_exit = false;
+
+    char menu_choice;
+
+    struct nameList* Nhead = malloc(sizeof(struct nameList));    // 머리 노드 생성
+    struct codeList* Chead = malloc(sizeof(struct codeList));    // 머리 노드는 데이터를 저장하지 않음
+
+    Nhead->nameNext = NULL;
+    Chead->codeNext = NULL;
+
+    while (1) {
+        printf("메뉴 선택 : \n");
+        printf("A. 회원입력 \n");
+        printf("B. 회원조회 \n");
+
+        scanf_s(" %c", &menu_choice);
+
+        if (menu_choice == 'A') {
+
+            printf("■ 회원입력 ■\n");
+            int num1 = 0001;
+            char code[20];
+
+            for (int j = 65; j < 91; j++) { //A0001 ~ Y0005까지 증가하는 for문
+                for (num1 = 1; num1 <= 5; num1++) {
+
+                    //fflush(stdin);
+
+                    printf("■ 이름입력 : \n");
+                    gets(nameList.name);
+
+                    if (strcmp("stop", nameList.name) == 0) {
+                        loop_exit = true;
+                        break;
+                    }
+
+                    codeList.code[0] = j;
+
+                    sprintf_s(code, sizeof(code), "%04d", num1); //숫자를 char[]형으로 형변환
+                    strcat_s(codeList.code, sizeof(codeList.code), code);
+
+                    printf("■ 회원코드 : %s\n", codeList.code);
+                    printf("----------------");
+
+                    userAdd(Nhead, Chead, nameList.name, codeList.code);
+                }
+                j++;
+
+                if (loop_exit == true) {
+                    break;
+                }
+            }
+
+            struct nameList* Ncurr = Nhead->nameNext;    // 연결 리스트 순회용 포인터에 첫 번째 노드의 주소 저장
+            struct codeList* Ccurr = Chead->codeNext;
+
+            printf("\n%10s %10s\n------------------\n", "이름", "회원코드");
+
+            while (Ncurr != NULL || Ccurr != NULL)               // 포인터가 NULL이 아닐 때 계속 반복
+            {
+                printf("%10s %10s \n", Ncurr->name, Ccurr->code);    // 현재 노드의 데이터 출력
+
+                Ncurr = Ncurr->nameNext;             // 포인터에 다음 노드의 주소 저장
+                Ccurr = Ccurr->codeNext;
+            }
+
+            printf("------------------\n");
+
+            Ncurr = Nhead->nameNext;      // 연결 리스트 순회용 포인터에 첫 번째 노드의 주소 저장
+            Ccurr = Chead->codeNext;
+
+            while (Ncurr != NULL || Ccurr != NULL)    // 포인터가 NULL이 아닐 때 계속 반복
+            {
+                struct NODE* Nnext = Ncurr->nameNext;    // 현재 노드의 다음 노드 주소를 임시로 저장
+                struct NODE* Cnext = Ccurr->codeNext;
+
+                free(Ncurr); // 현재 노드 메모리 해제
+                free(Ccurr);
+                Ncurr = Nnext; // 포인터에 다음 노드의 주소 저장
+                Ccurr = Cnext;
+            }
+
+            free(Nhead);    // 머리 노드 메모리 해제
+            free(Chead);
+
+        }
+        else if (menu_choice == 'B') {
+        
+             printf("\n이름\n---------\n");
+        
+
+        
+             printf("---------\n");
+        }
+    
+    }
+    return 0;
+}
